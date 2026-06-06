@@ -23,13 +23,13 @@ const buttonVariants = cva(
           "hover:-translate-y-px",
           "hover:opacity-95",
           // navy glow behind
-          "before:pointer-events-none before:absolute before:inset-[-18px] before:rounded-[calc(var(--radius-lg)+18px)]",
+          "before:pointer-events-none before:absolute before:inset-[-10px] before:rounded-[calc(var(--radius-lg)+10px)]",
           "before:-z-10",
-          "before:bg-[radial-gradient(60%_120%_at_50%_50%,color-mix(in_oklab,var(--ring)_92%,transparent),transparent_70%)]",
-          "before:opacity-100 before:blur-3xl",
+          "before:bg-[radial-gradient(60%_120%_at_50%_50%,color-mix(in_oklab,var(--ring)_55%,transparent),transparent_70%)]",
+          "before:opacity-60 before:blur-2xl",
           // extra halo strength (outer glow) — no 1px edge
-          "shadow-[0_0_42px_color-mix(in_oklab,var(--ring)_55%,transparent)]",
-          "hover:shadow-[0_0_56px_color-mix(in_oklab,var(--ring)_62%,transparent)]",
+          "shadow-[0_0_24px_color-mix(in_oklab,var(--ring)_30%,transparent)]",
+          "hover:shadow-[0_0_32px_color-mix(in_oklab,var(--ring)_38%,transparent)]",
           // subtle glass shine on top edge (not a fill gradient)
           "after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:content-['']",
           "after:ring-1 after:ring-inset after:ring-white/10",

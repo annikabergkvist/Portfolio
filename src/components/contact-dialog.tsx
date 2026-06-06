@@ -96,7 +96,7 @@ export function ContactDialog({ children }: { children: React.ReactNode }) {
               <li>Design Engineering</li>
               <li>UX/UI Design</li>
               <li>Frontend Development</li>
-              <li>AI-assisted workflows &amp; Vibe coding</li>
+              <li>AI-assisted workflows</li>
             </ul>
           </div>
 

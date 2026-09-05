@@ -13,6 +13,7 @@ export type ProjectMockupProps = {
   floatDurationMs?: number;
   floatDelayMs?: number;
   className?: string;
+  priority?: boolean;
 };
 
 export function ProjectMockup({
@@ -21,6 +22,7 @@ export function ProjectMockup({
   floatDurationMs = 6200,
   floatDelayMs = 0,
   className,
+  priority = false,
 }: ProjectMockupProps) {
   const reduceMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
@@ -92,7 +94,7 @@ export function ProjectMockup({
           height={1500}
           sizes={sizes}
           unoptimized
-          priority={false}
+          priority={priority}
           draggable={false}
           className={cn(
             // oversized/impactful
@@ -105,4 +107,3 @@ export function ProjectMockup({
     </motion.div>
   );
 }
-

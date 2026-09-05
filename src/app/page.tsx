@@ -61,10 +61,10 @@ export default function Home() {
                 >
                   <TypewriterRole
                     roles={[
-                      "AI-Assisted Workflow",
-                      "Product Design",
                       "UX/UI Design",
                       "Frontend Development",
+                      "Graphic Design",
+                      "AI-Assisted Workflow",
                      ]}
                   />
                 </div>

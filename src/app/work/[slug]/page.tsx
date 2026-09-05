@@ -6,7 +6,12 @@ import { ArrowLeft, ChevronRight, Github } from "lucide-react";
 import { BlockImageSaveUI } from "@/components/block-image-save-ui";
 import { ProjectMockup } from "@/components/project-mockup";
 import { MAIN_CONTENT_CLASS } from "@/lib/main-content";
-import { PROJECT_SLUGS, getProjectBySlug, type Project } from "@/lib/projects";
+import {
+  PROJECT_SLUGS,
+  getProjectBySlug,
+  type Project,
+  type ProjectGalleryImage,
+} from "@/lib/projects";
 import { getSiteUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +20,16 @@ const CASE_STUDY_SECTION_HEADINGS = new Set([
   "The problem.",
   "What I did.",
   "The result.",
+  "Overview.",
+  "The thinking behind it.",
+  "What I built.",
+  "A dual-surface product.",
+  "Challenges I solved.",
+  "Craft details.",
+  "Stack.",
+  "Two work models, on purpose.",
+  "Knowing where to stop.",
+  "Actionable over decorative.",
 ]);
 
 type PageProps = {
@@ -23,16 +38,31 @@ type PageProps = {
 
 type CaseStudyBlock =
   | { kind: "paragraph"; text: string }
-  | { kind: "lead"; label: string; body: string };
+  | { kind: "lead"; label: string; body: string }
+  | { kind: "list"; items: string[] };
 
 function buildCaseStudyBlocks(paragraphs: string[]): CaseStudyBlock[] {
   const blocks: CaseStudyBlock[] = [];
   for (let i = 0; i < paragraphs.length; i++) {
     const trimmed = paragraphs[i].trim();
     const next = paragraphs[i + 1]?.trim() ?? "";
-    if (CASE_STUDY_SECTION_HEADINGS.has(trimmed) && next.length > 0) {
+    if (trimmed.startsWith("- ")) {
+      const items = [trimmed.slice(2)];
+      while (i + 1 < paragraphs.length && paragraphs[i + 1].trim().startsWith("- ")) {
+        i += 1;
+        items.push(paragraphs[i].trim().slice(2));
+      }
+      blocks.push({ kind: "list", items });
+    } else if (
+      CASE_STUDY_SECTION_HEADINGS.has(trimmed) &&
+      next.length > 0 &&
+      !CASE_STUDY_SECTION_HEADINGS.has(next) &&
+      !next.startsWith("- ")
+    ) {
       blocks.push({ kind: "lead", label: trimmed, body: next });
       i += 1;
+    } else if (CASE_STUDY_SECTION_HEADINGS.has(trimmed)) {
+      blocks.push({ kind: "lead", label: trimmed, body: "" });
     } else {
       blocks.push({ kind: "paragraph", text: paragraphs[i] });
     }
@@ -89,13 +119,161 @@ function ProjectHeroIntro({ project }: { project: Project }) {
       </div>
 
       <div className="flex max-w-xl flex-col gap-5 sm:gap-6">
-        <p className="text-pretty text-base font-medium leading-relaxed text-secondary-foreground sm:text-lg sm:leading-relaxed">
-          {project.description}
-        </p>
+        {project.slug !== "orbit" ? (
+          <p className="text-pretty text-base font-medium leading-relaxed text-secondary-foreground sm:text-lg sm:leading-relaxed">
+            {project.description}
+          </p>
+        ) : null}
         <p className="text-pretty text-sm font-medium leading-relaxed text-muted-foreground sm:text-base sm:leading-relaxed">
           {project.role}
         </p>
       </div>
+    </div>
+  );
+}
+
+const bodyClass =
+  "text-[17px] font-medium leading-relaxed text-secondary-foreground sm:text-[18px] sm:leading-[1.65]";
+
+function RichText({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const bold = part.match(/^\*\*([^*]+)\*\*$/);
+        if (bold) {
+          return (
+            <span key={i} className="font-bold text-foreground">
+              {bold[1]}
+            </span>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
+function ProjectExternalLinks({
+  liveUrl,
+  githubUrl,
+  slug,
+}: {
+  liveUrl?: string;
+  githubUrl?: string;
+  slug: Project["slug"];
+}) {
+  if ((!liveUrl || slug === "vdff") && !githubUrl) {
+    return null;
+  }
+
+  return (
+    <div
+      className={cn(
+        bodyClass,
+        "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-8 sm:gap-y-2",
+      )}
+    >
+      {liveUrl && slug !== "vdff" ? (
+        <Link
+          href={liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-baseline gap-0.5 font-semibold text-primary underline decoration-primary/40 underline-offset-[0.2em] transition-colors hover:text-primary/90 hover:decoration-primary"
+        >
+          <ChevronRight
+            className="relative top-[0.12em] inline size-4 shrink-0 transition-transform group-hover:translate-x-0.5 sm:size-[1.125rem]"
+            strokeWidth={2.5}
+            aria-hidden
+          />
+          <span>View website</span>
+        </Link>
+      ) : null}
+      {githubUrl ? (
+        <Link
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-baseline gap-1.5 font-semibold text-primary underline decoration-primary/40 underline-offset-[0.2em] transition-colors hover:text-primary/90 hover:decoration-primary"
+        >
+          <Github
+            className="relative top-[0.08em] inline size-4 shrink-0 opacity-90 sm:size-[1.125rem]"
+            strokeWidth={2.25}
+            aria-hidden
+          />
+          <span>View on GitHub</span>
+        </Link>
+      ) : null}
+    </div>
+  );
+}
+
+function GalleryFigure({
+  image,
+  sizes,
+}: {
+  image: ProjectGalleryImage;
+  sizes: string;
+}) {
+  return (
+    <figure className="overflow-hidden rounded-xl border border-border/60 bg-card/20 shadow-[0_40px_90px_rgba(0,0,0,0.35)]">
+      <BlockImageSaveUI>
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          sizes={sizes}
+          className="h-auto w-full select-none"
+          draggable={false}
+          priority={false}
+        />
+      </BlockImageSaveUI>
+    </figure>
+  );
+}
+
+function ProjectGallery({ images }: { images: ProjectGalleryImage[] }) {
+  const groups: { variant: "desktop" | "phone"; items: ProjectGalleryImage[] }[] =
+    [];
+  for (const image of images) {
+    const variant = image.variant ?? "desktop";
+    const last = groups[groups.length - 1];
+    if (last && last.variant === variant) {
+      last.items.push(image);
+    } else {
+      groups.push({ variant, items: [image] });
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-8 sm:gap-10">
+      {groups.map((group, gi) =>
+        group.variant === "phone" ? (
+          <div
+            key={`phone-${gi}`}
+            className="mx-auto grid w-full max-w-4xl grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"
+          >
+            {group.items.map((image) => (
+              <GalleryFigure
+                key={image.src}
+                image={image}
+                sizes="(min-width: 1024px) 18vw, 46vw"
+              />
+            ))}
+          </div>
+        ) : (
+          <div key={`desktop-${gi}`} className="flex flex-col gap-8 sm:gap-10">
+            {group.items.map((image) => (
+              <GalleryFigure
+                key={image.src}
+                image={image}
+                sizes="(min-width: 1024px) 90vw, 94vw"
+              />
+            ))}
+          </div>
+        ),
+      )}
     </div>
   );
 }
@@ -105,15 +283,15 @@ function CaseStudyBody({
   liveUrl,
   githubUrl,
   slug,
+  showLinks,
 }: {
   paragraphs: string[];
   liveUrl?: string;
   githubUrl?: string;
   slug: Project["slug"];
+  showLinks: boolean;
 }) {
   const blocks = buildCaseStudyBlocks(paragraphs);
-  const bodyClass =
-    "text-[17px] font-medium leading-relaxed text-secondary-foreground sm:text-[18px] sm:leading-[1.65]";
 
   return (
     <div className="flex min-w-0 w-full max-w-[65ch] flex-col gap-6 lg:max-w-none">
@@ -121,8 +299,23 @@ function CaseStudyBody({
         if (block.kind === "lead") {
           return (
             <p key={`lead-${i}`} className={bodyClass}>
-              <span className="font-bold text-foreground">{block.label}</span> {block.body}
+              <span className="font-bold text-foreground">{block.label}</span>
+              {block.body ? ` ${block.body}` : null}
             </p>
+          );
+        }
+        if (block.kind === "list") {
+          return (
+            <ul
+              key={`list-${i}`}
+              className={cn(bodyClass, "list-disc space-y-2 pl-5")}
+            >
+              {block.items.map((item) => (
+                <li key={item}>
+                  <RichText text={item} />
+                </li>
+              ))}
+            </ul>
           );
         }
         return (
@@ -131,43 +324,9 @@ function CaseStudyBody({
           </p>
         );
       })}
-      {(liveUrl && slug !== "vdff") || githubUrl ? (
-        <div
-          className={cn(
-            bodyClass,
-            "mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-8 sm:gap-y-2",
-          )}
-        >
-          {liveUrl && slug !== "vdff" ? (
-            <Link
-              href={liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-baseline gap-0.5 font-semibold text-primary underline decoration-primary/40 underline-offset-[0.2em] transition-colors hover:text-primary/90 hover:decoration-primary"
-            >
-              <ChevronRight
-                className="relative top-[0.12em] inline size-4 shrink-0 transition-transform group-hover:translate-x-0.5 sm:size-[1.125rem]"
-                strokeWidth={2.5}
-                aria-hidden
-              />
-              <span>View website</span>
-            </Link>
-          ) : null}
-          {githubUrl ? (
-            <Link
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-baseline gap-1.5 font-semibold text-primary underline decoration-primary/40 underline-offset-[0.2em] transition-colors hover:text-primary/90 hover:decoration-primary"
-            >
-              <Github
-                className="relative top-[0.08em] inline size-4 shrink-0 opacity-90 sm:size-[1.125rem]"
-                strokeWidth={2.25}
-                aria-hidden
-              />
-              <span>View on GitHub</span>
-            </Link>
-          ) : null}
+      {showLinks ? (
+        <div className="mt-6 sm:mt-8">
+          <ProjectExternalLinks liveUrl={liveUrl} githubUrl={githubUrl} slug={slug} />
         </div>
       ) : null}
 
@@ -202,6 +361,7 @@ export default async function ProjectPage({ params }: PageProps) {
   const mockupAlt = project.subtitle
     ? `${project.title} — ${project.subtitle} mockup`
     : `${project.title} mockup`;
+  const hasGallery = Boolean(project.gallery?.length);
 
   return (
     <main className="flex min-w-0 flex-col pb-24 pt-12 sm:pb-28 sm:pt-14 lg:pt-16">
@@ -221,6 +381,7 @@ export default async function ProjectPage({ params }: PageProps) {
             liveUrl={project.liveUrl}
             githubUrl={project.githubUrl}
             slug={project.slug}
+            showLinks={!hasGallery}
           />
 
           <div className="min-w-0 overflow-visible lg:-mt-[min(28vh,13rem)] lg:sticky lg:top-28 lg:self-start xl:-mt-[min(32vh,15rem)] xl:top-24">
@@ -239,6 +400,17 @@ export default async function ProjectPage({ params }: PageProps) {
             </div>
           </div>
         </div>
+
+        {hasGallery && project.gallery ? (
+          <div className="flex flex-col gap-10 sm:gap-12">
+            <ProjectGallery images={project.gallery} />
+            <ProjectExternalLinks
+              liveUrl={project.liveUrl}
+              githubUrl={project.githubUrl}
+              slug={project.slug}
+            />
+          </div>
+        ) : null}
 
         <p className="border-t border-border pt-12 sm:pt-14">
           <Link

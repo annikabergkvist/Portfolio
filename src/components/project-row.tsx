@@ -81,6 +81,7 @@ export function ProjectRow({
         alt={`${title} mockup`}
         floatDurationMs={floatDurationMs}
         floatDelayMs={floatDelayMs}
+        priority={isFirst}
       />
     </div>
   );

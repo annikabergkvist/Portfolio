@@ -111,19 +111,25 @@ function ProjectHeroIntro({ project }: { project: Project }) {
             {project.title}
           </h1>
           {project.subtitle ? (
-            <p className="text-balance text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-3xl lg:text-[2rem] lg:leading-tight">
-              {project.subtitle}
+            <p className="text-pretty text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-3xl lg:text-[2rem] lg:leading-tight">
+              {project.slug === "orbit" ? (
+                <>
+                  A B2B SaaS workspace
+                  <br />
+                  for product and engineering teams
+                </>
+              ) : (
+                project.subtitle
+              )}
             </p>
           ) : null}
         </div>
       </div>
 
       <div className="flex max-w-xl flex-col gap-5 sm:gap-6">
-        {project.slug !== "orbit" ? (
-          <p className="text-pretty text-base font-medium leading-relaxed text-secondary-foreground sm:text-lg sm:leading-relaxed">
-            {project.description}
-          </p>
-        ) : null}
+        <p className="text-pretty text-base font-medium leading-relaxed text-secondary-foreground sm:text-lg sm:leading-relaxed">
+          {project.description}
+        </p>
         <p className="text-pretty text-sm font-medium leading-relaxed text-muted-foreground sm:text-base sm:leading-relaxed">
           {project.role}
         </p>
@@ -368,7 +374,7 @@ export default async function ProjectPage({ params }: PageProps) {
       <div className={cn(MAIN_CONTENT_CLASS, "flex flex-col gap-16 sm:gap-20 lg:gap-24")}>
         <Link
           href="/#work"
-          className="inline-flex w-fit items-center gap-2 text-sm font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          className="inline-flex w-fit items-center gap-2 text-sm font-medium text-primary underline-offset-4 transition-colors hover:text-foreground hover:underline"
         >
           <ArrowLeft className="size-4 shrink-0" strokeWidth={2.5} aria-hidden />
           Work
@@ -415,7 +421,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <p className="border-t border-border pt-12 sm:pt-14">
           <Link
             href="/#work"
-            className="inline-flex items-center gap-2 text-base font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+            className="inline-flex items-center gap-2 text-base font-medium text-primary underline-offset-4 transition-colors hover:text-foreground hover:underline"
           >
             <ArrowLeft className="size-4 shrink-0" strokeWidth={2.5} aria-hidden />
             Work

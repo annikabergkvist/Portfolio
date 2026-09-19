@@ -99,8 +99,8 @@ export function MobileHeader() {
           type="button"
           variant="ghost"
           className={cn(
-            "h-14 min-w-14 touch-manipulation px-0.5 text-sidebar-accent-foreground",
-            "hover:bg-sidebar-accent hover:text-muted-foreground",
+            "h-14 min-w-14 touch-manipulation px-0.5 text-primary",
+            "hover:bg-sidebar-accent hover:text-foreground",
           )}
           aria-expanded={open}
           aria-controls="mobile-menu"
@@ -146,9 +146,9 @@ export function MobileHeader() {
                           <button
                             type="button"
                             className={cn(
-                              "block text-center font-light text-foreground antialiased",
+                              "block text-center font-light text-primary antialiased",
                               "text-[clamp(1.75rem,6.5vw,2.375rem)] leading-none tracking-[-0.02em]",
-                              "transition-colors hover:text-muted-foreground",
+                              "transition-colors hover:text-foreground",
                             )}
                             onClick={() => {
                               // Let the dialog open first; then close the menu.
@@ -163,9 +163,9 @@ export function MobileHeader() {
                           ref={i === 0 ? firstLinkRef : undefined}
                           href={item.href}
                           className={cn(
-                            "block text-center font-light text-foreground antialiased",
+                            "block text-center font-light text-primary antialiased",
                             "text-[clamp(1.75rem,6.5vw,2.375rem)] leading-none tracking-[-0.02em]",
-                            "transition-colors hover:text-muted-foreground",
+                            "transition-colors hover:text-foreground",
                           )}
                           onClick={() => setOpen(false)}
                         >
@@ -186,7 +186,7 @@ export function MobileHeader() {
                       <ContactDialogTrigger key={label}>
                         <button
                           type="button"
-                          className="rounded-md p-2 transition-colors hover:bg-sidebar-accent hover:text-muted-foreground"
+                          className="rounded-md p-2 text-primary transition-colors hover:bg-sidebar-accent hover:text-foreground"
                           aria-label="Contact"
                           onClick={() => setOpen(false)}
                         >
@@ -200,7 +200,7 @@ export function MobileHeader() {
                     <a
                       key={label}
                       href={href}
-                      className="rounded-md p-2 transition-colors hover:bg-sidebar-accent hover:text-muted-foreground"
+                      className="rounded-md p-2 text-primary transition-colors hover:bg-sidebar-accent hover:text-foreground"
                       aria-label={label}
                       {...(href.startsWith("http")
                         ? { target: "_blank", rel: "noopener noreferrer" }

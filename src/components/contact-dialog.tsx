@@ -92,12 +92,17 @@ export function ContactDialog({ children }: { children: React.ReactNode }) {
             <h2 className="text-4xl font-black leading-[0.95] tracking-[-0.02em] text-foreground sm:text-5xl">
               Let&apos;s talk.
             </h2>
-            <ul className="space-y-1 md:space-y-2 text-[17px] font-medium leading-relaxed text-muted-foreground">
-              <li>Design Engineering</li>
-              <li>UX/UI Design</li>
-              <li>Frontend Development</li>
-              <li>AI-assisted workflows</li>
-            </ul>
+            <div className="flex flex-col gap-6">
+              <p className="text-[17px] font-medium leading-relaxed text-muted-foreground">
+                Have a role or project in mind?
+                <br />
+                I&apos;d love to hear more.
+              </p>
+              <p className="text-[17px] font-medium leading-relaxed text-muted-foreground">
+                Or email me at{" "}
+                <MailLink className="font-semibold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground/40" />
+              </p>
+            </div>
           </div>
 
           <form
@@ -172,12 +177,7 @@ export function ContactDialog({ children }: { children: React.ReactNode }) {
                 className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm font-medium text-foreground"
               >
                 Couldn&apos;t send from here. Email me at{" "}
-                <a
-                  href={SITE_MAILTO}
-                  className="font-semibold text-primary underline decoration-primary/40 underline-offset-2"
-                >
-                  {SITE_EMAIL_ADDRESS}
-                </a>
+                <MailLink className="font-semibold text-primary underline decoration-primary/40 underline-offset-2" />
                 .
               </p>
             ) : null}
@@ -197,6 +197,35 @@ export function ContactDialog({ children }: { children: React.ReactNode }) {
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function MailLink({ className }: { className?: string }) {
+  const [copied, setCopied] = React.useState(false);
+
+  return (
+    <span className="inline">
+      <a
+        href={SITE_MAILTO}
+        className={className}
+        onPointerDown={(event) => event.stopPropagation()}
+        onClick={async (event) => {
+          event.stopPropagation();
+          try {
+            await navigator.clipboard.writeText(SITE_EMAIL_ADDRESS);
+            setCopied(true);
+            window.setTimeout(() => setCopied(false), 2000);
+          } catch {
+            // Native mailto still runs if clipboard is blocked.
+          }
+        }}
+      >
+        {SITE_EMAIL_ADDRESS}
+      </a>
+      {copied ? (
+        <span className="ml-2 text-sm font-medium text-primary">Copied</span>
+      ) : null}
+    </span>
   );
 }
 

@@ -75,7 +75,7 @@ export function ProjectMockup({
         className={cn(
           "pointer-events-none absolute inset-0 -z-10",
           "rounded-[28px]",
-          "bg-[radial-gradient(closest-side,rgba(183,110,121,0.32),transparent_70%)]",
+          "bg-[radial-gradient(closest-side,rgba(236,81,137,0.32),transparent_70%)]",
           "blur-2xl opacity-90",
         )}
       />

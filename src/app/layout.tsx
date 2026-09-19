@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Manrope } from "next/font/google";
 import { CookieConsent } from "@/components/cookie-consent";
 import { MobileHeader } from "@/components/mobile-header";
 import { Sidebar, SIDEBAR_WIDTH_CLASS } from "@/components/sidebar";
@@ -12,6 +12,11 @@ const dmSans = DM_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+});
+
+const manrope = Manrope({
+  variable: "--font-hero",
+  subsets: ["latin"],
 });
 
 const siteUrl = getSiteUrl();
@@ -78,6 +83,7 @@ export default function RootLayout({
       lang="en"
       className={cn(
         dmSans.variable,
+        manrope.variable,
         /* "dark" enables .dark CSS variables and Tailwind dark:* variants */
         "dark",
       )}

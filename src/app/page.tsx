@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { TypewriterRole } from "@/components/typewriter-role";
-import { HeroBackgroundVideo } from "@/components/hero-background-video";
+import { GeometricNetwork } from "@/components/geometric-network";
+import { HeroBackgroundScene } from "@/components/hero-background-scene";
+import { HeroHeadline } from "@/components/hero-headline";
 import { ScrollChevron } from "@/components/scroll-chevron";
 import { ProjectRow } from "@/components/project-row";
 import { projects } from "@/lib/projects";
@@ -22,59 +23,31 @@ export default function Home() {
     <main className="flex min-w-0 flex-col">
       <section
         className={cn(
-          "relative flex w-full flex-col items-start justify-start overflow-hidden bg-background pb-2 md:pb-4",
+          "relative flex w-full flex-col items-center justify-start overflow-hidden bg-background pb-2 md:pb-4",
           HERO_SECTION_TOP_CLASS,
           HERO_SECTION_MIN_HEIGHT_CLASS,
           "xl:ml-[-6rem] xl:w-[calc(100%+6rem)]",
         )}
       >
-        <HeroBackgroundVideo className="hero-bg-video pointer-events-none absolute inset-0 z-0 min-h-full w-full object-cover" />
+        <HeroBackgroundScene className="pointer-events-none absolute inset-0 z-0 h-full min-h-full w-full" />
         <div
-          className="pointer-events-none absolute inset-0 z-[1] bg-black/45"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[min(60dvh,32rem)] bg-gradient-to-b from-transparent via-background/80 to-background sm:h-[min(55dvh,28rem)]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[min(22dvh,12rem)] bg-gradient-to-b from-transparent to-background"
           aria-hidden
         />
         <div
           className={cn(
-            MAIN_CONTENT_CLASS,
-            "relative z-10 w-full max-sm:px-7 xl:pl-6 2xl:pl-10",
+            "relative z-10 w-full px-6 max-sm:px-7",
             HERO_MAIN_BLOCK_LAYOUT_CLASS,
           )}
         >
-          <div className="@container min-w-0 w-full">
-            <div className="flex w-full min-w-0 max-w-full flex-col items-start text-left max-md:gap-6 md:gap-16">
-              <p className="font-bold uppercase leading-none text-primary antialiased max-md:[font-size:clamp(0.8125rem,calc((100cqw-0.75rem)/20),1.125rem)] max-md:tracking-[0.34em] max-md:[word-spacing:0.52em] md:text-[21px] md:tracking-[0.32em] md:[word-spacing:0.6em] lg:text-[22px] lg:tracking-[0.34em] lg:[word-spacing:0.7em]">
-                Annika Bergkvist
-              </p>
-              <div className="flex w-full min-w-0 flex-col items-stretch gap-3 md:items-start md:gap-6">
-                <h1 className="max-w-full min-w-0 font-semibold leading-[0.92] tracking-[-0.02em] text-foreground max-md:text-balance max-md:[font-size:clamp(1.9rem,calc((100cqw-0.75rem)/7.75),3.75rem)] sm:max-md:whitespace-nowrap md:w-max md:max-w-full md:text-balance md:font-bold md:leading-[0.88] md:[font-size:clamp(2.85rem,11.5vw+1.6rem,7.5rem)]">
-                  Design Engineer
-                </h1>
-                <div
-                  className={cn(
-                    "w-full min-w-0 max-w-full pt-0.5 leading-[1.06] md:w-max",
-                    "max-[360px]:[font-size:clamp(1.05rem,calc((100cqw-0.75rem)/11.75),1.65rem)] max-sm:[font-size:clamp(1.15rem,calc((100cqw-0.75rem)/10.5),2.05rem)] sm:[font-size:clamp(1.55rem,min(5.8vw+0.45rem,3.35rem),3.35rem)] md:[font-size:clamp(1.45rem,5.4vw+0.55rem,5rem)]",
-                  )}
-                >
-                  <TypewriterRole
-                    roles={[
-                      "UX/UI Design",
-                      "Frontend Development",
-                      "Graphic Design",
-                      "AI-Assisted Workflow",
-                     ]}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <HeroHeadline />
         </div>
         <ScrollChevron />
       </section>
 
+      <div className="relative">
+        <GeometricNetwork />
+        <div className="relative z-[1] -mt-[100svh]">
       {/* Work: section h2; project titles are h3 inside ProjectRow */}
       <section id="work" className="flex flex-col">
         <h2 className="sr-only">Selected work</h2>
@@ -130,20 +103,20 @@ export default function Home() {
               About me
             </h2>
             <p className="text-[17px] font-medium leading-relaxed text-muted-foreground">
-              I’m a Design Engineer based in Kristianstad, Sweden, bridging product
-              design and frontend development.
+              I’m a designer based in Kristianstad, Sweden, working across UX, UI,
+              visual design and frontend development.
             </p>
             <p className="text-[17px] font-medium leading-relaxed text-muted-foreground">
-              With 10+ years across communication, UX/UI, and frontend, I’ve
-              shifted into Design Engineering, building production-ready interfaces
-              with Next.js, React, Tailwind CSS, and shadcn/ui. I use AI-assisted
-              workflows (Cursor + Claude) to iterate fast while keeping quality
-              and consistency high.
+              With 10+ years across communication, visual design and UX/UI, I work
+              with everything from user research and visual identities to
+              interaction and UI design, prototypes and frontend development. I
+              care about how things look, work and feel to use, from the overall
+              structure to the details of each interaction. I can take ownership
+              of a project from concept to delivery.
             </p>
             <p className="text-[17px] font-medium leading-relaxed text-muted-foreground">
-              What I bring to a team: strong design thinking, solid frontend
-              execution, and the ability to own a feature end‑to‑end, from concept
-              and prototypes to shipped code.
+              AI tools are a natural part of my everyday workflow. I use them to
+              explore ideas, develop designs and build.
             </p>
             <ContactDialog>
               <ContactDialogTrigger asChild>
@@ -170,6 +143,8 @@ export default function Home() {
           </Link>
         </p>
       </footer>
+        </div>
+      </div>
     </main>
   );
 }

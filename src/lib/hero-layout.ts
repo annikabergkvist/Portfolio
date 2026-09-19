@@ -1,15 +1,15 @@
 /**
- * Hero top padding: below `xl`, layout already offsets the header (`pt-16`) — only a small
- * extra gap here. Desktop (`xl+`) keeps the large top band beside the sidebar.
+ * Hero top padding: below `xl`, layout already offsets the header (`pt-16`). Desktop sits
+ * the copy in the visual field rather than under a large empty band.
  */
-export const HERO_SECTION_TOP_CLASS = "max-xl:pt-6 xl:pt-72";
+export const HERO_SECTION_TOP_CLASS = "max-xl:pt-6 xl:pt-0";
 
 /**
- * Below `xl`: main copy is vertically centered in the hero (min-height = first viewport), shifted
- * slightly upward so it sits a bit above the true middle. `xl+`: normal block flow + `xl:pt-72`.
+ * Centered copy, optically sitting in the hero field so the WebGL curtain
+ * and the sentence share the first screen.
  */
 export const HERO_MAIN_BLOCK_LAYOUT_CLASS =
-  "max-xl:flex max-xl:min-h-0 max-xl:flex-1 max-xl:flex-col max-xl:items-start max-xl:justify-center max-xl:-translate-y-[min(5dvh,2rem)] xl:block xl:flex-none xl:translate-y-0";
+  "flex min-h-0 flex-1 flex-col items-center justify-center text-center -translate-y-[min(6.5dvh,3.25rem)]";
 
 /**
  * Below `xl`, layout keeps `pt-16` for the mobile header — min-height subtracts 4rem so

@@ -352,6 +352,29 @@ function CaseStudyBody({
           </BlockImageSaveUI>
         </figure>
       ) : null}
+
+      {slug === "wexiodisk" ? (
+        <div className="mt-10 flex flex-col gap-8 sm:mt-12 sm:gap-10">
+          <GalleryFigure
+            image={{
+              src: "/images/wexiodisk-priskalkyl.png",
+              alt: "Wexiödisk price calculator showing savings and payback",
+              width: 1440,
+              height: 4511,
+            }}
+            sizes="(min-width: 1024px) 58vw, 94vw"
+          />
+          <GalleryFigure
+            image={{
+              src: "/images/wexiodisk-detaljerad-kalkylator.png",
+              alt: "Wexiödisk detailed calculator with advanced cost inputs",
+              width: 1347,
+              height: 1828,
+            }}
+            sizes="(min-width: 1024px) 58vw, 94vw"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
